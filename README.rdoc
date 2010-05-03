@@ -1,6 +1,13 @@
 = bard-rake
 
-Description goes here.
+Rake tasks for all bard projects.
+* Bootstrap projects
+* Database backup
+
+= Usage
+
+In your Rakefile:
+require 'bard/rake'
 
 == Note on Patches/Pull Requests
  
