@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{bard-rake}
-  s.version = "0.0.1"
+  s.version = "0.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Micah Geisel"]
@@ -27,6 +27,9 @@ Gem::Specification.new do |s|
      "VERSION",
      "bard-rake.gemspec",
      "lib/bard/rake.rb",
+     "lib/bard/rake/bootstrap.rb",
+     "lib/bard/rake/bundler.rb",
+     "lib/bard/rake/db.rb",
      "spec/bard-rake_spec.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb"
