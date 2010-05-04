@@ -10,7 +10,7 @@ namespace :bootstrap do
   desc "Bootstrap project to run tests"
   task :test => :bootstrap do
     system "rake gems:install db:create db:schema:load RAILS_ENV=test"
-    system "rake gems:install RAILS_ENV=cucumber"
+    system "rake gems:install RAILS_ENV=cucumber" unless bundler_used?
   end
 
   desc "Bootstrap project to run in production"
