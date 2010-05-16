@@ -1,1 +1,1 @@
-require 'bard/rake'
+# NOOP shim. require 'bard/rake' instead
