@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{bard-rake}
-  s.version = "0.1.1"
+  s.version = "0.1.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Micah Geisel"]
-  s.date = %q{2010-05-04}
+  s.date = %q{2010-05-16}
   s.description = %q{Rake tasks for all bard projects.
 * Bootstrap projects
 * Database backup}
@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
      "Rakefile",
      "VERSION",
      "bard-rake.gemspec",
+     "lib/bard-rake.rb",
      "lib/bard/rake.rb",
      "lib/bard/rake/bootstrap.rb",
      "lib/bard/rake/bundler.rb",
@@ -40,8 +41,8 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.6}
   s.summary = %q{Rake tasks for all bard projects.}
   s.test_files = [
-    "spec/spec_helper.rb",
-     "spec/bard-rake_spec.rb"
+    "spec/bard-rake_spec.rb",
+     "spec/spec_helper.rb"
   ]
 
   if s.respond_to? :specification_version then
