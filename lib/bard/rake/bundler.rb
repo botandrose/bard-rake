@@ -3,7 +3,11 @@ def bundler_used?
   File.exist? "Gemfile"
 end
 
-if bundler_used?
+def is_rails_2?
+  Rake::Task.tasks.include?(:gems)
+end
+
+if bundler_used? and is_rails_2?
   Rake::Task[:gems].clear
   Rake::Task[:"gems:install"].clear
 end
