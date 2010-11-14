@@ -4,13 +4,12 @@ task :restart do
 end
 
 desc "Bootstrap project"
-task :bootstrap => %w(bootstrap:files gems:install db:create db:migrate restart)
+task :bootstrap => %w(bootstrap:files db:create db:migrate restart)
 
 namespace :bootstrap do
   desc "Bootstrap project to run tests"
   task :test => :bootstrap do
-    system "rake gems:install db:create db:schema:load RAILS_ENV=test"
-    system "rake gems:install RAILS_ENV=cucumber" unless bundler_used?
+    system "rake db:create db:migrate RAILS_ENV=test" unless ENV['RAILS_ENV'] == "test"
   end
 
   desc "Bootstrap project to run in production"
