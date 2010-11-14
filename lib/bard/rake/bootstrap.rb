@@ -30,6 +30,6 @@ namespace :bootstrap do
   end
 end
 
-Rake::Task[:default].clear if Rake::Task.tasks.include?(:default)
+Rake::Task[:default].clear if Rake::Task.task_defined?(:default)
 desc "Bootstrap the current project and run the tests."
 task :default => ["bootstrap:test", :spec, :cucumber]
