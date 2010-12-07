@@ -14,7 +14,7 @@ namespace :bootstrap do
 
   desc "Bootstrap project to run in production"
   task :production => :bootstrap do
-    if File.exist?("public/stylesheets/sass") or File.exist?("app/sass")
+    if %w(app/stylesheets app/sass public/stylesheets/sass).any? { |file| File.exist?(file) }
       Sass::Plugin.options[:always_update] = true;
       Sass::Plugin.update_stylesheets
     end
