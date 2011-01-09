@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{bard-rake}
-  s.version = "0.1.6"
+  s.version = "0.1.7"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Micah Geisel"]
-  s.date = %q{2010-12-06}
+  s.date = %q{2011-01-08}
   s.description = %q{Rake tasks for all bard projects.
 * Bootstrap projects
 * Database backup}
