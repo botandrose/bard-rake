@@ -18,6 +18,7 @@ namespace :bootstrap do
       Sass::Plugin.options[:always_update] = true;
       Sass::Plugin.update_stylesheets
     end
+    Rake::Task["barista:brew"].invoke if Rake::Task.task_defined?("barista:brew")
     Rake::Task["asset:packager:build_all"].invoke if File.exist?("vendor/plugins/asset_packager")
   end
 
