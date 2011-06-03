@@ -16,7 +16,7 @@ namespace :db do
     options += " -p#{config['password']}" if config['password']
     options += " -h #{config['host']}"    if config['host']
 
-    raise RuntimeError, "I only work with mysql." unless config['adapter'] == 'mysql'
+    raise RuntimeError, "I only work with mysql." unless config['adapter'].include? 'mysql'
     raise RuntimeError, "Cannot find mysql." if mysql.blank?
 
     sh "#{mysql} #{options} '#{config["database"]}' < db/data.sql"
