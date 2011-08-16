@@ -20,6 +20,12 @@ namespace :bootstrap do
     end
     Rake::Task["barista:brew"].invoke if Rake::Task.task_defined?("barista:brew")
     Rake::Task["asset:packager:build_all"].invoke if File.exist?("vendor/plugins/asset_packager")
+    Rake::Task["bootstrap:production:post"].invoke if Rake::Task.task_defined?("bootstrap:production:post")
+  end
+
+  namespace :production do
+    task :post do
+    end
   end
 
   task :files do
