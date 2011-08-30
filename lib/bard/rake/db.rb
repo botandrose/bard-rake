@@ -1,9 +1,18 @@
 namespace :db do
   desc "Dump the current database to db/data.sql"
-  task :dump => :"backup:db" do
+  task :dump => :environment do
     config = ActiveRecord::Base.configurations[RAILS_ENV || 'development']
-    db_file = Dir.glob("../#{config['database'].gsub(/_/, '-')}-*.sql").first
-    FileUtils.move db_file, "db/data.sql"
+    filepath  = "db/data.sql"
+    mysqldump = `which mysqldump`.strip
+    options   =  "-e -u #{config['username']}"
+    options   += " -p'#{config['password']}'" if config['password']
+    options   += " -h #{config['host']}"      if config['host']
+    options   += " -S #{config['socket']}"    if config['socket']
+
+    raise RuntimeError, "I only work with mysql." unless config['adapter'].starts_with? 'mysql'
+    raise RuntimeError, "Cannot find mysqldump." if mysqldump.blank?
+    
+    `#{mysqldump} #{options} #{config['database']} > #{filepath}`
   end
 
   desc "Load the db/data.sql data into the current database."
