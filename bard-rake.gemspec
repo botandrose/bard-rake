@@ -4,16 +4,14 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{bard-rake}
-  s.version = "0.2.1"
+  s.name = "bard-rake"
+  s.version = "0.3.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = [%q{Micah Geisel}]
-  s.date = %q{2011-08-30}
-  s.description = %q{Rake tasks for all bard projects.
-* Bootstrap projects
-* Database backup}
-  s.email = %q{micah@botandrose.com}
+  s.authors = ["Micah Geisel"]
+  s.date = "2011-10-12"
+  s.description = "Rake tasks for all bard projects.\n* Bootstrap projects\n* Database backup"
+  s.email = "micah@botandrose.com"
   s.extra_rdoc_files = [
     "LICENSE",
     "README.rdoc"
@@ -30,14 +28,15 @@ Gem::Specification.new do |s|
     "lib/bard/rake/bootstrap.rb",
     "lib/bard/rake/bundler.rb",
     "lib/bard/rake/db.rb",
+    "lib/bard/rake/railtie.rb",
     "spec/bard-rake_spec.rb",
     "spec/spec.opts",
     "spec/spec_helper.rb"
   ]
-  s.homepage = %q{http://github.com/botandrose/bard-rake}
-  s.require_paths = [%q{lib}]
-  s.rubygems_version = %q{1.8.5}
-  s.summary = %q{Rake tasks for all bard projects.}
+  s.homepage = "http://github.com/botandrose/bard-rake"
+  s.require_paths = ["lib"]
+  s.rubygems_version = "1.8.10"
+  s.summary = "Rake tasks for all bard projects."
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
