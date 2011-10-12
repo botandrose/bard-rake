@@ -1,1 +1,1 @@
-# NOOP shim. require 'bard/rake' instead
+require "bard/rake/railtie" if defined?(Rails)
