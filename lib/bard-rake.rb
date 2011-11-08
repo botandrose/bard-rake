@@ -1,1 +1,1 @@
-require "bard/rake/railtie" if defined?(Rails)
+require "bard/rake/railtie" if defined?(Rails::Engine)
