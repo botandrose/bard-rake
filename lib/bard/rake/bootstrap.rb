@@ -21,6 +21,7 @@ namespace :bootstrap do
     Rake::Task["barista:brew"].invoke if Rake::Task.task_defined?("barista:brew")
     Rake::Task["asset:packager:build_all"].invoke if File.exist?("vendor/plugins/asset_packager")
     Rake::Task["bootstrap:production:post"].invoke if Rake::Task.task_defined?("bootstrap:production:post")
+    Rake::Task["restart"].execute
   end
 
   namespace :production do
