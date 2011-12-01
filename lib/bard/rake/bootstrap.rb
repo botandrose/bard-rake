@@ -35,6 +35,6 @@ end
 
 Rake::Task[:default].clear if Rake::Task.task_defined?(:default)
 desc "Bootstrap the current project and run the tests."
-task :default => do
+task :default do
   system "rake bootstrap spec cucumber RAILS_ENV=test"
 end
