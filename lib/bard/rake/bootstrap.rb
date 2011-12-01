@@ -7,11 +7,6 @@ desc "Bootstrap project"
 task :bootstrap => %w(bootstrap:files db:create db:migrate restart)
 
 namespace :bootstrap do
-  desc "Bootstrap project to run tests"
-  task :test => :bootstrap do
-    system "rake db:create db:migrate RAILS_ENV=test" unless ENV['RAILS_ENV'] == "test"
-  end
-
   desc "Bootstrap project to run in production"
   task :production => :bootstrap do
     if %w(app/stylesheets app/sass public/stylesheets/sass).any? { |file| File.exist?(file) }
@@ -40,4 +35,6 @@ end
 
 Rake::Task[:default].clear if Rake::Task.task_defined?(:default)
 desc "Bootstrap the current project and run the tests."
-task :default => ["bootstrap:test", :spec, :cucumber]
+task :default => do
+  system "rake bootstrap spec cucumber RAILS_ENV=test"
+end
