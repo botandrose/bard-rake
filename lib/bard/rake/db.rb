@@ -1,30 +1,52 @@
 namespace :db do
   desc "Dump the current database to db/data.sql"
   task :dump => :environment do
-    mysqldump = `which mysqldump`.strip
-    raise RuntimeError, "Cannot find mysqldump." if mysqldump.blank?
-    sh "#{mysqldump} -e #{mysql_options} > #{file_path}"
+    klass = adapter_from_config BardRake.database_config
+    klass.dump
   end
 
   desc "Load the db/data.sql data into the current database."
   task :load => ["db:drop", "db:create"] do
-    mysql = `which mysql`.strip
-    raise RuntimeError, "Cannot find mysql." if mysql.blank?
-    sh "#{mysql} #{mysql_options} < #{file_path}"
+    klass = adapter_from_config BardRake.database_config
+    klass.load
   end
 
-  def file_path
-    "db/data.sql"
+  def adapter_from_config config
+    "BardRake::#{config["adapter"].camelize}".constantize
+  end
+end
+
+module BardRake
+  FILE_PATH = "db/data.sql"
+
+  def self.database_config
+    @config ||= ActiveRecord::Base.configurations[Rails.env || "development"]
   end
 
-  def mysql_options
-    config = ActiveRecord::Base.configurations[Rails.env || "development"]
-    raise RuntimeError, "I only work with mysql." unless config["adapter"].starts_with? "mysql"
+  class Mysql
+    def self.dump
+      mysqldump = `which mysqldump`.strip
+      raise RuntimeError, "Cannot find mysqldump." if mysqldump.blank?
+      sh "#{mysqldump} -e #{mysql_options} > #{FILE_PATH}"
+    end
 
-    options =  " -u #{config["username"]}"
-    options += " -p'#{config["password"]}'" if config["password"]
-    options += " -h #{config["host"]}"      if config["host"]
-    options += " -S #{config["socket"]}"    if config["socket"]
-    options += " '#{config["database"]}'"
+    def self.load
+      mysql = `which mysql`.strip
+      raise RuntimeError, "Cannot find mysql." if mysql.blank?
+      sh "#{mysql} #{mysql_options} < #{FILE_PATH}"
+    end
+
+    private
+    
+    def self.mysql_options
+      config = BardRake.database_config
+      options =  " -u #{config["username"]}"
+      options += " -p'#{config["password"]}'" if config["password"]
+      options += " -h #{config["host"]}"      if config["host"]
+      options += " -S #{config["socket"]}"    if config["socket"]
+      options += " '#{config["database"]}'"
+    end
   end
+
+  Mysql2 = Mysql
 end
