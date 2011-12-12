@@ -23,6 +23,26 @@ module BardRake
     @config ||= ActiveRecord::Base.configurations[Rails.env || "development"]
   end
 
+  class Postgresql
+    def self.dump
+      pg_dump = `which pg_dump`.strip
+      raise RuntimeError, "Cannot find pg_dump." if pg_dump.blank?
+      sh "#{pg_dump} -f#{FILE_PATH} #{database}"
+    end
+
+    def self.load
+      psql = `which psql`.strip
+      raise RuntimeError, "Cannot find psql." if psql.blank?
+      sh "#{psql} -q -d#{database} -f#{FILE_PATH}"
+    end
+
+    private
+
+    def self.database
+      BardRake.database_config["database"]
+    end
+  end
+
   class Mysql
     def self.dump
       mysqldump = `which mysqldump`.strip
