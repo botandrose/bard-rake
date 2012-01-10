@@ -4,14 +4,16 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = "bard-rake"
-  s.version = "0.4.0"
+  s.name = %q{bard-rake}
+  s.version = "0.4.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Micah Geisel"]
-  s.date = "2011-12-12"
-  s.description = "Rake tasks for all bard projects.\n* Bootstrap projects\n* Database backup"
-  s.email = "micah@botandrose.com"
+  s.date = %q{2012-01-09}
+  s.description = %q{Rake tasks for all bard projects.
+* Bootstrap projects
+* Database backup}
+  s.email = %q{micah@botandrose.com}
   s.extra_rdoc_files = [
     "LICENSE",
     "README.rdoc"
@@ -33,10 +35,10 @@ Gem::Specification.new do |s|
     "spec/spec.opts",
     "spec/spec_helper.rb"
   ]
-  s.homepage = "http://github.com/botandrose/bard-rake"
+  s.homepage = %q{http://github.com/botandrose/bard-rake}
   s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.12"
-  s.summary = "Rake tasks for all bard projects."
+  s.rubygems_version = %q{1.6.2}
+  s.summary = %q{Rake tasks for all bard projects.}
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
