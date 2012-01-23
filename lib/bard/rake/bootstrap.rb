@@ -13,9 +13,9 @@ namespace :bootstrap do
       Sass::Plugin.options[:always_update] = true;
       Sass::Plugin.update_stylesheets
     end
-    Rake::Task["barista:brew"].invoke if Rake::Task.task_defined?("barista:brew")
-    Rake::Task["asset:packager:build_all"].invoke if File.exist?("vendor/plugins/asset_packager")
-    Rake::Task["bootstrap:production:post"].invoke if Rake::Task.task_defined?("bootstrap:production:post")
+    invoke_task_if_exists "barista:brew"
+    invoke_task_if_exists "asset:packager:build_all"
+    invoke_task_if_exists "bootstrap:production:post"
     Rake::Task["restart"].execute
   end
 
@@ -35,6 +35,16 @@ end
 
 Rake::Task[:default].clear if Rake::Task.task_defined?(:default)
 desc "Bootstrap the current project and run the tests."
-task :default do
-  system "rake bootstrap spec cucumber RAILS_ENV=test"
+task :default => [:set_test_env, :bootstrap, :spec] do
+  invoke_task_if_exists "cucumber"
+  invoke_task_if_exists "spec:javascripts"
+end
+
+task :set_test_env do
+  ENV["RAILS_ENV"] = "test"
+  RAILS_ENV = "test"
+end
+
+def invoke_task_if_exists task_name
+  Rake::Task[task_name].invoke if Rake::Task.task_defined? task_name
 end
