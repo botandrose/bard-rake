@@ -4,7 +4,11 @@ task :restart do
 end
 
 desc "Bootstrap project"
-task :bootstrap => %w(bootstrap:files db:create db:migrate restart)
+task :bootstrap => "bootstrap:files" do
+  invoke_task_if_exists "db:create"
+  invoke_task_if_exists "db:migrate"
+  Rake::Task["restart"].execute
+end
 
 namespace :bootstrap do
   desc "Bootstrap project to run in production"
