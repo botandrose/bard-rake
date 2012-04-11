@@ -23,6 +23,26 @@ module BardRake
     @config ||= ActiveRecord::Base.configurations[Rails.env || "development"]
   end
 
+  class Sqlite3
+    class << self
+      include Rake::DSL
+
+      def dump
+        FileUtils.cp database, FILE_PATH
+      end
+
+      def load
+        FileUtils.cp FILE_PATH, database
+      end
+
+      private
+
+      def database
+        BardRake.database_config["database"]
+      end
+    end
+  end
+
   class Postgresql
     class << self
       include Rake::DSL
