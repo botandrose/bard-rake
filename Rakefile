@@ -22,8 +22,6 @@ end
 
 task :release do
   system "git push"
-  system "git push github"
-  Rake::Task["gemcutter:release"].invoke
 end
 
 require 'spec/rake/spectask'
