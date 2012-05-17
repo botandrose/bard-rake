@@ -19,6 +19,7 @@ namespace :bootstrap do
     end
     invoke_task_if_exists "barista:brew"
     invoke_task_if_exists "asset:packager:build_all"
+    invoke_task_if_exists "assets:precompile"
     invoke_task_if_exists "bootstrap:production:post"
     Rake::Task["restart"].execute
   end
