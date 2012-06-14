@@ -40,7 +40,7 @@ end
 
 Rake::Task[:default].clear if Rake::Task.task_defined?(:default)
 desc "Bootstrap the current project and run the tests."
-task :default => [:set_test_env, :"db:create", :"db:schema:load", :spec] do
+task :default => [:set_test_env, :"db:create", :"db:schema:load", :"db:migrate", :spec] do
   invoke_task_if_exists "cucumber"
   invoke_task_if_exists "spec:javascripts"
 end
