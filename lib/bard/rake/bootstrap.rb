@@ -34,7 +34,7 @@ namespace :bootstrap do
     system "git submodule init"
     system "git submodule update --merge"
     system "git submodule foreach 'git checkout `git name-rev --name-only HEAD`'"
-    system "cp config/database.sample.yml config/database.yml" unless File.exist?('config/database.yml')
+    system "cp config/database.sample.yml config/database.yml" unless File.exist?('config/database.yml') or !File.exist?('config/database.sample.yml')
   end
 end
 
