@@ -7,12 +7,15 @@ desc "Bootstrap project"
 task :bootstrap => "bootstrap:files" do
   invoke_task_if_exists "db:create"
   invoke_task_if_exists "db:migrate"
-  Rake::Task["restart"].execute
+  Rake::Task["restart"].invoke
 end
 
 namespace :bootstrap do
   desc "Bootstrap project to run in production"
-  task :production => :bootstrap do
+  task :production => "bootstrap:files" do
+    invoke_task_if_exists "db:create"
+    invoke_task_if_exists "db:migrate"
+
     if %w(app/stylesheets app/sass public/stylesheets/sass).any? { |file| File.exist?(file) }
       Sass::Plugin.options[:always_update] = true;
       Sass::Plugin.update_stylesheets
@@ -21,7 +24,7 @@ namespace :bootstrap do
     invoke_task_if_exists "asset:packager:build_all"
     invoke_task_if_exists "assets:precompile"
     invoke_task_if_exists "bootstrap:production:post"
-    Rake::Task["restart"].execute
+    Rake::Task["restart"].invoke
   end
 
   namespace :production do
