@@ -1,4 +1,10 @@
 namespace :db do
+  namespace :drop do
+    task :current_environment => [:load_config, :rails_env] do
+      drop_database_and_rescue Rails.env
+    end
+  end
+
   desc "Dump the current database to db/data.sql"
   task :dump => :environment do
     klass = adapter_from_config BardRake.database_config
@@ -6,7 +12,7 @@ namespace :db do
   end
 
   desc "Load the db/data.sql data into the current database."
-  task :load => ["db:drop", "db:create"] do
+  task :load => ["db:drop:current_environment", "db:create"] do
     klass = adapter_from_config BardRake.database_config
     klass.load
   end
