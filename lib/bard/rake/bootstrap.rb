@@ -48,6 +48,8 @@ task :default => [:set_test_env, :bootstrap, :spec] do
   invoke_task_if_exists "spec:javascripts"
 end
 
+task :ci => ["assets:precompile", :default]
+
 task :set_test_env do
   ENV["RAILS_ENV"] = "test"
   RAILS_ENV = "test"
