@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "bard-rake"
-  s.version = "0.9.2"
+  s.version = "0.9.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Micah Geisel"]
-  s.date = "2013-04-04"
+  s.date = "2013-05-14"
   s.description = "Rake tasks for all bard projects.\n* Bootstrap projects\n* Database backup"
   s.email = "micah@botandrose.com"
   s.extra_rdoc_files = [
@@ -35,7 +35,7 @@ Gem::Specification.new do |s|
   ]
   s.homepage = "http://github.com/botandrose/bard-rake"
   s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.24"
+  s.rubygems_version = "1.8.25"
   s.summary = "Rake tasks for all bard projects."
 
   if s.respond_to? :specification_version then
