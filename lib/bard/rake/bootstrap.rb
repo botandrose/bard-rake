@@ -76,7 +76,7 @@ task :default => [:set_test_env, :bootstrap, :spec] do
   invoke_task_if_exists "spec:javascripts"
 end
 
-task :ci => [:set_ci_env, :set_fail_fast_env, "assets:clean:all", "assets:precompile", :default]
+task :ci => [:set_ci_env, :set_fail_fast_env, :bootstrap, "assets:clean:all", "assets:precompile", :default]
 
 task :set_ci_env do
   ENV["CI"] = "1"
