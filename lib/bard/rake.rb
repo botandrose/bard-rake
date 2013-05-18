@@ -1,4 +1,3 @@
-require 'bard/rake/bundler'
 require 'bard/rake/db_dump_load'
 require 'bard/rake/db_migrate_sanity'
 require 'bard/rake/bootstrap'
