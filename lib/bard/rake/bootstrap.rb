@@ -10,34 +10,6 @@ task :bootstrap => "bootstrap:files" do
   Rake::Task["restart"].invoke
 end
 
-namespace :db do
-  namespace :migrate do
-    task :all => [:load_config, :rails_env] do
-      configs_for_environment.each do |config|
-        ActiveRecord::Base.establish_connection(config)
-        ActiveRecord::Migration.verbose = ENV["VERBOSE"] ? ENV["VERBOSE"] == "true" : true
-        ActiveRecord::Migrator.migrate(ActiveRecord::Migrator.migrations_paths, ENV["VERSION"] ? ENV["VERSION"].to_i : nil) do |migration|
-          ENV["SCOPE"].blank? || (ENV["SCOPE"] == migration.scope)
-        end
-      end
-
-      Rake::Task["db:_dump"].invoke
-    end
-  end
-
-  namespace :rollback do
-    task :all => [:load_config, :rails_env] do
-      configs_for_environment.each do |config|
-        ActiveRecord::Base.establish_connection(config)
-        step = ENV['STEP'] ? ENV['STEP'].to_i : 1
-        ActiveRecord::Migrator.rollback(ActiveRecord::Migrator.migrations_paths, step)
-      end
-
-      Rake::Task["db:_dump"].invoke
-    end
-  end
-end
-
 namespace :bootstrap do
   desc "Bootstrap project to run in production"
   task :production => "bootstrap:files" do
@@ -68,37 +40,3 @@ namespace :bootstrap do
     system "cp config/database.sample.yml config/database.yml" unless File.exist?('config/database.yml') or !File.exist?('config/database.sample.yml')
   end
 end
-
-Rake::Task[:default].clear if Rake::Task.task_defined?(:default)
-desc "Bootstrap the current project and run the tests."
-task :default => [:bootstrap_test] do
-  invoke_task_if_exists "spec"
-  invoke_task_if_exists "cucumber"
-  invoke_task_if_exists "spec:javascripts"
-end
-
-task :bootstrap_test => [:set_test_env, :bootstrap]
-
-task :ci => [:set_ci_env, :set_fail_fast_env, :bootstrap_test, "assets:clean:all", "assets:precompile", :default]
-
-task :set_ci_env do
-  ENV["CI"] = "1"
-end
-
-task :set_fail_fast_env do
-  ENV["FAIL_FAST"] = "1"
-end
-
-task :set_test_env do
-  ENV["RAILS_ENV"] = "test"
-  RAILS_ENV = "test"
-end
-
-def invoke_task_if_exists task_name
-  Rake::Task[task_name].invoke if Rake::Task.task_defined? task_name
-end
-
-begin
-  require "rspec/core/rake_task"
-  RSpec::Core::RakeTask.new(:spec)
-rescue LoadError; end
