@@ -97,3 +97,8 @@ end
 def invoke_task_if_exists task_name
   Rake::Task[task_name].invoke if Rake::Task.task_defined? task_name
 end
+
+begin
+  require "rspec/core/rake_task"
+  RSpec::Core::RakeTask.new(:spec)
+rescue LoadError; end
