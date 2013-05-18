@@ -11,11 +11,18 @@ end
 
 task :bootstrap_test => [:set_test_env, :bootstrap]
 
+task :parallel => ["parallel:create", "parallel:prepare", "parallel:features"]
+
 Rake::Task[:default].clear if Rake::Task.task_defined?(:default)
 desc "Bootstrap the current project and run the tests."
 task :default => [:bootstrap_test] do
   invoke_task_if_exists "spec"
-  invoke_task_if_exists "cucumber"
+  require "debugger"; debugger
+  if ENV["CI"] && Rake::Task.task_defined?("parallel:features")
+    Rake::Task[:parallel].invoke
+  else
+    invoke_task_if_exists "cucumber"
+  end
   invoke_task_if_exists "spec:javascripts"
 end
 
@@ -28,4 +35,3 @@ end
 task :set_fail_fast_env do
   ENV["FAIL_FAST"] = "1"
 end
-
