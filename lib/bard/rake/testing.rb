@@ -17,7 +17,6 @@ Rake::Task[:default].clear if Rake::Task.task_defined?(:default)
 desc "Bootstrap the current project and run the tests."
 task :default => [:bootstrap_test] do
   invoke_task_if_exists "spec"
-  require "debugger"; debugger
   if ENV["CI"] && Rake::Task.task_defined?("parallel:features")
     Rake::Task[:parallel].invoke
   else
