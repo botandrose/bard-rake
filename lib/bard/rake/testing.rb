@@ -18,14 +18,14 @@ desc "Bootstrap the current project and run the tests."
 task :default => [:bootstrap_test] do
   invoke_task_if_exists "spec"
   if ENV["CI"] && Rake::Task.task_defined?("parallel:features")
-    Rake::Task[:parallel].invoke
+    Rake::Task["parallel:features"].invoke
   else
     invoke_task_if_exists "cucumber"
   end
   invoke_task_if_exists "spec:javascripts"
 end
 
-task :ci => [:set_ci_env, :set_fail_fast_env, :bootstrap_test, "assets:clean:all", "assets:precompile", :default]
+task :ci => [:set_ci_env, :set_fail_fast_env, :bootstrap_test, "assets:clean", "assets:precompile", :default]
 
 task :set_ci_env do
   ENV["CI"] = "1"
