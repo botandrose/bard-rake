@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "bard-rake"
-  s.version = "0.10.3"
+  s.version = "0.10.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Micah Geisel"]
-  s.date = "2013-06-23"
+  s.date = "2013-06-24"
   s.description = "Rake tasks for all bard projects.\n* Bootstrap projects\n* Database backup"
   s.email = "micah@botandrose.com"
   s.extra_rdoc_files = [
@@ -27,7 +27,7 @@ Gem::Specification.new do |s|
     "lib/bard/rake.rb",
     "lib/bard/rake/bootstrap.rb",
     "lib/bard/rake/db_dump_load.rb",
-    "lib/bard/rake/db_migrate_sanity.rb",
+    "lib/bard/rake/db_multiple_environment_sanity.rb",
     "lib/bard/rake/railtie.rb",
     "lib/bard/rake/testing.rb",
     "spec/bard-rake_spec.rb",
