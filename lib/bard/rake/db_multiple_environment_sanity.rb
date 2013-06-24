@@ -35,5 +35,27 @@ if defined?(ActiveRecord)
         configs_for_environment.each &block
       end
     end
+
+    namespace :drop do
+      task :current => [:load_config] do
+        if defined?(ActiveRecord::Tasks::DatabaseTasks)
+          config = ActiveRecord::Tasks::DatabaseTasks.current_config
+          ActiveRecord::Tasks::DatabaseTasks.drop config
+        else
+          drop_database current_config
+        end
+      end
+    end
+
+    namespace :create do
+      task :current => [:load_config] do
+        if defined?(ActiveRecord::Tasks::DatabaseTasks)
+          config = ActiveRecord::Tasks::DatabaseTasks.current_config
+          ActiveRecord::Tasks::DatabaseTasks.create config
+        else
+          create_database current_config
+        end
+      end
+    end
   end
 end

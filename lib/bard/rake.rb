@@ -1,5 +1,5 @@
+require 'bard/rake/db_multiple_environment_sanity'
 require 'bard/rake/db_dump_load'
-require 'bard/rake/db_migrate_sanity'
 require 'bard/rake/bootstrap'
 require 'bard/rake/testing'
 
