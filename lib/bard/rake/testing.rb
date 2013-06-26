@@ -18,7 +18,7 @@ desc "Bootstrap the current project and run the tests."
 task :default => [:bootstrap_test] do
   invoke_task_if_exists "spec"
   if ENV["CI"] && Rake::Task.task_defined?("parallel:features")
-    Rake::Task["parallel:features"].invoke
+    Rake::Task["parallel"].invoke
   else
     invoke_task_if_exists "cucumber"
   end
