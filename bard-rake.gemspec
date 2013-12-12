@@ -4,7 +4,7 @@ require 'bard/rake/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "bard-rake"
-  spec.version       = BardRake::VERSION
+  spec.version       = Bard::Rake::VERSION
   spec.authors       = ["Micah Geisel"]
   spec.email         = ["micah@botandrose.com"]
   spec.description   = "Rake tasks for all bard projects.\n* Bootstrap projects\n* Database backup"

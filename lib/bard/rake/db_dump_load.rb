@@ -1,100 +1,102 @@
 namespace :db do
   desc "Dump the current database to db/data.sql"
   task :dump => :environment do
-    klass = adapter_from_config BardRake.database_config
+    klass = adapter_from_config Bard::Rake.database_config
     klass.dump
   end
 
   desc "Load the db/data.sql data into the current database."
   task :load => ["db:drop:current", "db:create:current"] do
-    klass = adapter_from_config BardRake.database_config
+    klass = adapter_from_config Bard::Rake.database_config
     klass.load
   end
 
   def adapter_from_config config
-    "BardRake::#{config["adapter"].camelize}".constantize
+    "Bard::Rake::#{config["adapter"].camelize}".constantize
   end
 end
 
-module BardRake
-  FILE_PATH = "db/data.sql"
+module Bard
+  module Rake
+    FILE_PATH = "db/data.sql"
 
-  def self.database_config
-    @config ||= ActiveRecord::Base.configurations[Rails.env || "development"]
-  end
+    def self.database_config
+      @config ||= ActiveRecord::Base.configurations[Rails.env || "development"]
+    end
 
-  class Sqlite3
-    class << self
-      include Rake::DSL
+    class Sqlite3
+      class << self
+        include ::Rake::DSL
 
-      def dump
-        FileUtils.cp database, FILE_PATH
-      end
+        def dump
+          FileUtils.cp database, FILE_PATH
+        end
 
-      def load
-        FileUtils.cp FILE_PATH, database
-      end
+        def load
+          FileUtils.cp FILE_PATH, database
+        end
 
-      private
+        private
 
-      def database
-        BardRake.database_config["database"]
+        def database
+          Bard::Rake.database_config["database"]
+        end
       end
     end
-  end
 
-  class Postgresql
-    class << self
-      include Rake::DSL
+    class Postgresql
+      class << self
+        include ::Rake::DSL
 
-      def dump
-        pg_dump = `which pg_dump`.strip
-        raise RuntimeError, "Cannot find pg_dump." if pg_dump.blank?
-        sh "#{pg_dump} -f#{FILE_PATH} #{database}"
-      end
+        def dump
+          pg_dump = `which pg_dump`.strip
+          raise RuntimeError, "Cannot find pg_dump." if pg_dump.blank?
+          sh "#{pg_dump} -f#{FILE_PATH} #{database}"
+        end
 
-      def load
-        psql = `which psql`.strip
-        raise RuntimeError, "Cannot find psql." if psql.blank?
-        sh "#{psql} -q -d#{database} -f#{FILE_PATH}"
-      end
+        def load
+          psql = `which psql`.strip
+          raise RuntimeError, "Cannot find psql." if psql.blank?
+          sh "#{psql} -q -d#{database} -f#{FILE_PATH}"
+        end
 
-      private
+        private
 
-      def database
-        BardRake.database_config["database"]
-      end
-    end
-  end
-
-  class Mysql
-    class << self
-      include Rake::DSL
-
-      def dump
-        mysqldump = `which mysqldump`.strip
-        raise RuntimeError, "Cannot find mysqldump." if mysqldump.blank?
-        sh "#{mysqldump} --single-transaction --quick --add-drop-database --databases -e #{mysql_options} > #{FILE_PATH}"
-      end
-
-      def load
-        mysql = `which mysql`.strip
-        raise RuntimeError, "Cannot find mysql." if mysql.blank?
-        sh "#{mysql} #{mysql_options} < #{FILE_PATH}"
-      end
-
-      private
-      
-      def mysql_options
-        config = BardRake.database_config
-        options =  " -u #{config["username"]}"
-        options += " -p'#{config["password"]}'" if config["password"]
-        options += " -h #{config["host"]}"      if config["host"]
-        options += " -S #{config["socket"]}"    if config["socket"]
-        options += " '#{config["database"]}'"
+        def database
+          Bard::Rake.database_config["database"]
+        end
       end
     end
-  end
 
-  Mysql2 = Mysql
+    class Mysql
+      class << self
+        include ::Rake::DSL
+
+        def dump
+          mysqldump = `which mysqldump`.strip
+          raise RuntimeError, "Cannot find mysqldump." if mysqldump.blank?
+          sh "#{mysqldump} --single-transaction --quick --add-drop-database --databases -e #{mysql_options} > #{FILE_PATH}"
+        end
+
+        def load
+          mysql = `which mysql`.strip
+          raise RuntimeError, "Cannot find mysql." if mysql.blank?
+          sh "#{mysql} #{mysql_options} < #{FILE_PATH}"
+        end
+
+        private
+        
+        def mysql_options
+          config = Bard::Rake.database_config
+          options =  " -u #{config["username"]}"
+          options += " -p'#{config["password"]}'" if config["password"]
+          options += " -h #{config["host"]}"      if config["host"]
+          options += " -S #{config["socket"]}"    if config["socket"]
+          options += " '#{config["database"]}'"
+        end
+      end
+    end
+
+    Mysql2 = Mysql
+  end
 end

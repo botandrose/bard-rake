@@ -1,4 +1,6 @@
-module BardRake
-  VERSION = "0.11.0"
+module Bard
+  module Rake
+    VERSION = "0.11.0"
+  end
 end
 
