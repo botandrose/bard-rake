@@ -4,7 +4,7 @@ end
 
 desc "Bootstrap project"
 task :bootstrap => "bootstrap:files" do
-  invoke_task_if_exists "db:create"
+  invoke_task_if_exists "db:create:all"
   invoke_task_if_exists "db:migrate:all"
   Rake::Task["restart"].invoke
 end
