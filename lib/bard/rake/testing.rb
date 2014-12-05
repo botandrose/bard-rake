@@ -26,12 +26,8 @@ task :default => [:bootstrap_test] do
   end
 end
 
-task :ci => [:set_ci_env, :set_fail_fast_env, :bootstrap_test, "assets:clean", "assets:precompile", :default]
+task :ci => [:set_ci_env, :bootstrap_test, "assets:clean", "assets:precompile", :default]
 
 task :set_ci_env do
   ENV["CI"] = "1"
-end
-
-task :set_fail_fast_env do
-  ENV["FAIL_FAST"] = "1"
 end
