@@ -51,7 +51,7 @@ module Bard
         def dump
           pg_dump = `which pg_dump`.strip
           raise RuntimeError, "Cannot find pg_dump." if pg_dump.blank?
-          sh "#{pg_dump} -f#{FILE_PATH} #{database}"
+          sh "#{pg_dump} -c -f#{FILE_PATH} #{database}"
         end
 
         def load
