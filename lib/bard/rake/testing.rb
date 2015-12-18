@@ -2,7 +2,8 @@
 begin
   require "rspec/core/rake_task"
   RSpec::Core::RakeTask.new(:spec)
-rescue LoadError; end
+rescue LoadError
+end unless Rake::Task.task_defined?(:spec)
 
 task :set_test_env do
   ENV["RAILS_ENV"] = "test"
