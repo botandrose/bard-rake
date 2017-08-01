@@ -8,7 +8,7 @@ task :bootstrap do
   system "cp config/database.sample.yml config/database.yml" unless File.exist?('config/database.yml') or !File.exist?('config/database.sample.yml')
   invoke_task_if_exists "db:create"
   invoke_task_if_exists "db:migrate"
-  if ENV["RAILS_ENV"] == "production"
+  if %w(staging production).include?(ENV["RAILS_ENV"])
     invoke_task_if_exists "assets:precompile"
   end
   Rake::Task["restart"].invoke
