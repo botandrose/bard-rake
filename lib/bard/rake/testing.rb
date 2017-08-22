@@ -27,7 +27,7 @@ task :default => [:bootstrap_test] do
   end
 end
 
-task :ci => [:set_ci_env, :bootstrap_test, "assets:clean", "assets:precompile", :default]
+task :ci => [:set_ci_env, :bootstrap_test, "log:clear", "assets:clean", "assets:precompile", :default]
 
 task :set_ci_env do
   ENV["CI"] = "1"
