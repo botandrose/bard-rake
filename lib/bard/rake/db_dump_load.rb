@@ -75,7 +75,7 @@ module Bard
         def dump
           mysqldump = `which mysqldump`.strip
           raise RuntimeError, "Cannot find mysqldump." if mysqldump.blank?
-          sh "#{mysqldump} --single-transaction --quick --add-drop-database --databases -e #{mysql_options} > #{FILE_PATH}"
+          sh "#{mysqldump} --no-create-db --single-transaction --quick -e #{mysql_options} > #{FILE_PATH}"
         end
 
         def load
