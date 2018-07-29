@@ -12,3 +12,22 @@ namespace :db do
   end
 end
 
+# FIXME is this necessary? Why can't we just rely on RAILS_ENV?
+if defined?(ActiveRecord)
+  namespace :db do
+    namespace :create do
+      task :current => :load_config do
+        config = ActiveRecord::Tasks::DatabaseTasks.current_config
+        ActiveRecord::Tasks::DatabaseTasks.create config
+      end
+    end
+
+    namespace :drop do
+      task :current => :load_config do
+        config = ActiveRecord::Tasks::DatabaseTasks.current_config
+        ActiveRecord::Tasks::DatabaseTasks.drop config
+      end
+    end
+  end
+end
+

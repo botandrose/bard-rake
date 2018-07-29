@@ -1,27 +1,43 @@
 if defined?(ActiveRecord)
   namespace :db do
+    namespace :create do
+      task :all => [:load_config] do
+        invoke_task_if_exists :rails_env
+        run_in_all_environments do |config|
+          ActiveRecord::Base.establish_connection(config)
+          ActiveRecord::Tasks::DatabaseTasks.create config
+        end
+
+        if includes_test_environment? && !parallel?
+          invoke_task_if_exists "parallel:create"
+        end
+      end
+    end
+
+    namespace :drop do
+      task :all => [:load_config] do
+        invoke_task_if_exists :rails_env
+        run_in_all_environments do |config|
+          ActiveRecord::Base.establish_connection(config)
+          ActiveRecord::Tasks::DatabaseTasks.drop config
+        end
+
+        if includes_test_environment? && !parallel?
+          invoke_task_if_exists "parallel:drop"
+        end
+      end
+    end
+
     namespace :migrate do
       task :all => [:load_config] do
         invoke_task_if_exists :rails_env
         run_in_all_environments do |config|
           ActiveRecord::Base.establish_connection(config)
-          ActiveRecord::Migration.verbose = ENV["VERBOSE"] ? ENV["VERBOSE"] == "true" : true
-          ActiveRecord::Migrator.migrate(ActiveRecord::Migrator.migrations_paths, ENV["VERSION"] ? ENV["VERSION"].to_i : nil) do |migration|
-            ENV["SCOPE"].blank? || (ENV["SCOPE"] == migration.scope)
-          end
+          ActiveRecord::Tasks::DatabaseTasks.migrate
         end
 
-        Rake::Task["db:_dump"].invoke
-      end
-    end
-
-    namespace :rollback do
-      task :all => [:load_config] do
-        invoke_task_if_exists :rails_env
-        run_in_all_environments do |config|
-          ActiveRecord::Base.establish_connection(config)
-          step = ENV['STEP'] ? ENV['STEP'].to_i : 1
-          ActiveRecord::Migrator.rollback(ActiveRecord::Migrator.migrations_paths, step)
+        if includes_test_environment? && !parallel?
+          invoke_task_if_exists "parallel:migrate"
         end
 
         Rake::Task["db:_dump"].invoke
@@ -36,52 +52,13 @@ if defined?(ActiveRecord)
       end
     end
 
-    namespace :drop do
-      task :current => [:load_config] do
-        if defined?(ActiveRecord::Tasks::DatabaseTasks)
-          config = ActiveRecord::Tasks::DatabaseTasks.current_config
-          ActiveRecord::Tasks::DatabaseTasks.drop config
-        else
-          drop_database current_config
-        end
-      end
-    end
-
-    namespace :create do
-      task :current => [:load_config] do
-        if defined?(ActiveRecord::Tasks::DatabaseTasks)
-          config = ActiveRecord::Tasks::DatabaseTasks.current_config
-          ActiveRecord::Tasks::DatabaseTasks.create config
-        else
-          create_database current_config
-        end
-      end
-    end
-
-    def production?
-      ENV["RAILS_ENV"] == "production"
+    def includes_test_environment?
+      %w(development test).include?(ENV["RAILS_ENV"])
     end
 
     def parallel?
       !!ENV["TEST_ENV_NUMBER"]
     end
-
-    task :create do
-      unless production? or parallel?
-        invoke_task_if_exists "parallel:create"
-      end
-    end
-
-    task :migrate do
-      unless production? or parallel?
-        invoke_task_if_exists "parallel:migrate"
-      end
-    end
-
-    task :rollback do
-      unless production? or parallel?
-        invoke_task_if_exists "parallel:rollback"
-      end
-    end
   end
 end
+
