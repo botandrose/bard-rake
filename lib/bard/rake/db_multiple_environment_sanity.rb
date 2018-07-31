@@ -53,7 +53,15 @@ if defined?(ActiveRecord)
     end
 
     def includes_test_environment?
-      %w(development test).include?(ENV["RAILS_ENV"])
+      %w(development test).include?(rails_env)
+    end
+
+    def rails_env
+      if defined?(Rails)
+        Rails.env
+      else
+        ENV["RAILS_ENV"]
+      end
     end
 
     def parallel?
