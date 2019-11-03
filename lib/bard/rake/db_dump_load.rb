@@ -7,7 +7,7 @@ namespace :db do
   end
 
   desc "Load the db/data.sql data into the current database."
-  task :load => ["db:drop:current", "db:create:current"] do
+  task :load => ["db/data.sql", "db:drop:current", "db:create:current"] do
     Backhoe.load
   end
 end
