@@ -77,7 +77,7 @@ if defined?(ActiveRecord)
     end
 
     def local_database?(configuration)
-      configuration["host"].blank? || LOCAL_HOSTS.include?(configuration["host"])
+      configuration["host"].blank? || ActiveRecord::Tasks::DatabaseTasks::LOCAL_HOSTS.include?(configuration["host"])
     end
 
     def test_environment?
