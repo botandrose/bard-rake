@@ -63,21 +63,13 @@ if defined?(ActiveRecord)
         next unless whitelist.include?(env)
         next if modified_databases.include?(database)
 
-        if local_database?(configuration)
-          ActiveRecord::Base.establish_connection configuration
-          block.call configuration, env
-        else
-          $stderr.puts "This task only modifies local databases. #{database} is on a remote host."
-        end
+        ActiveRecord::Base.establish_connection configuration
+        block.call configuration, env
 
         modified_databases << database
       end
 
       Rake::Task["db:_dump"].invoke
-    end
-
-    def local_database?(configuration)
-      configuration["host"].blank? || ActiveRecord::Tasks::DatabaseTasks::LOCAL_HOSTS.include?(configuration["host"])
     end
 
     def test_environment?
