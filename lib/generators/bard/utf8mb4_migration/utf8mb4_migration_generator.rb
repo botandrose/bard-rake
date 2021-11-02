@@ -17,9 +17,7 @@ module Bard
 
     def specify_charset_and_collation_in_database_yml
       ["config/database.yml", "config/database.sample.yml"].each do |file|
-        ["  collation: utf8mb4_general_ci\n", "  charset: utf8mb4\n"].each do |line|
-          inject_into_file file, line, after: "  socket: /var/run/mysqld/mysqld.sock\n"
-        end
+        inject_into_file file, "  charset: utf8mb4\n", after: "  socket: /var/run/mysqld/mysqld.sock\n"
       end
     end
   end
