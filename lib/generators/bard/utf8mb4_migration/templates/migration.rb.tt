@@ -30,7 +30,7 @@ class <%= migration_class_name %> < ActiveRecord::Migration[<%= ActiveRecord::Mi
   end
 
   def collation
-    "utf8mb4_general_ci"
+    "utf8mb4_unicode_ci"
   end
 
   def db
