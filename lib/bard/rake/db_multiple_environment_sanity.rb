@@ -56,8 +56,13 @@ if defined?(ActiveRecord)
 
       ActiveRecord::Base.configurations.configs_for.each do |db_config|
         env = db_config.env_name
-        configuration = db_config.config
-        database = configuration["database"]
+        if Rails.version < "7"
+          configuration = db_config.config
+          database = configuration["database"]
+        else
+          configuration = db_config.configuration_hash
+          database = configuration[:database]
+        end
 
         next unless database
         next unless whitelist.include?(env)
