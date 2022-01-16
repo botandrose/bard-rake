@@ -17,15 +17,23 @@ if defined?(ActiveRecord)
   namespace :db do
     namespace :create do
       task :current => :load_config do
-        config = ActiveRecord::Tasks::DatabaseTasks.current_config
-        ActiveRecord::Tasks::DatabaseTasks.create config
+        if ActiveRecord::Tasks::DatabaseTasks.respond_to?(:current_config)
+          config = ActiveRecord::Tasks::DatabaseTasks.current_config
+          ActiveRecord::Tasks::DatabaseTasks.create config
+        else
+          ActiveRecord::Tasks::DatabaseTasks.create_current Rails.env
+        end
       end
     end
 
     namespace :drop do
       task :current => :load_config do
-        config = ActiveRecord::Tasks::DatabaseTasks.current_config
-        ActiveRecord::Tasks::DatabaseTasks.drop config
+        if ActiveRecord::Tasks::DatabaseTasks.respond_to?(:current_config)
+          config = ActiveRecord::Tasks::DatabaseTasks.current_config
+          ActiveRecord::Tasks::DatabaseTasks.drop config
+        else
+          ActiveRecord::Tasks::DatabaseTasks.drop_current Rails.env
+        end
       end
     end
   end
