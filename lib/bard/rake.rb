@@ -7,5 +7,11 @@ def invoke_task_if_exists task_name
   Rake::Task[task_name].invoke if Rake::Task.task_defined? task_name
 end
 
+def invoke *tasks
+  tasks.each do |task|
+    Rake::Task[task].invoke
+  end
+end
+
 module Bard::Rake
 end

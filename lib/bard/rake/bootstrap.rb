@@ -6,11 +6,21 @@ end
 desc "Bootstrap project"
 task :bootstrap do
   system "cp config/database.sample.yml config/database.yml" unless File.exist?('config/database.yml') or !File.exist?('config/database.sample.yml')
-  invoke_task_if_exists "db:create:all"
-  invoke_task_if_exists "db:migrate:all"
-  if %w(staging production).include?(ENV["RAILS_ENV"])
+  case ENV["RAILS_ENV"]
+  when "production", "staging"
+    invoke "db:prepare"
     invoke_task_if_exists "assets:precompile"
+  when "test"
+    invoke parallel? ? "parallel:prepare" : "db:prepare"
+    invoke_task_if_exists "assets:precompile"
+  else # development
+    invoke "db:prepare"
+    invoke_task_if_exists "parallel:prepare"
   end
-  Rake::Task["restart"].invoke
+  invoke "restart"
+end
+
+def parallel?
+  Rake::Task.task_defined?("parallel:create")
 end
 
