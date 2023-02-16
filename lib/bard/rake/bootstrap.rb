@@ -1,6 +1,6 @@
 task :restart do
   system "touch tmp/restart.txt"
-  system "if which passenger-config >/dev/null; then passenger-config restart-app `pwd`; fi"
+  system "passenger-config restart-app `pwd` >/dev/null 2>&1"
 end
 
 desc "Bootstrap project"
