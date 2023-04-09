@@ -13,7 +13,7 @@ namespace :db do
 
   task :backup => :environment do
     project_name = File.basename(Dir.getwd)
-    Backhoe.backup "bard-backups-test/#{project_name}", **Rails.application.credentials.bard_backup
+    Backhoe.backup "bard-backup/#{project_name}", **Rails.application.credentials.bard_backup
   end
 
   task "drop:current" => :environment do
