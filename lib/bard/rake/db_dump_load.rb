@@ -1,14 +1,19 @@
 require "backhoe"
 
 namespace :db do
-  desc "Dump the current database to db/data.sql"
+  desc "Dump the current database to db/data.sql.gz"
   task :dump => :environment do
-    Backhoe.dump
+    Backhoe.dump "db/data.sql.gz"
   end
 
   desc "Load the db/data.sql data into the current database."
-  task :load => ["db:drop:current", "db:create:current"] do
-    Backhoe.load
+  task :load => :environment do
+    Backhoe.load "db/data.sql.gz", drop_and_create: true
+  end
+
+  task :backup => :environment do
+    project_name = File.basename(Dir.getwd)
+    Backhoe.backup "bard-backups-test/#{project_name}", **Rails.application.credentials.bard_backup
   end
 
   task "drop:current" => :environment do

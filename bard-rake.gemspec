@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "rake"
-  spec.add_dependency "backhoe"
+  spec.add_dependency "backhoe", ">=0.6.0"
   spec.add_dependency "railties"
 
   spec.add_development_dependency "bundler"
