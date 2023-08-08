@@ -27,8 +27,14 @@ task :default => [:bootstrap_test] do
   end
 end
 
-task :ci => [:set_ci_env, :bootstrap_test, "log:clear", "assets:clean", "assets:precompile", :default]
+task :ci => [:set_ci_env, :bootstrap_test, "log:clear", "assets:clean", "assets:precompile", :default, :clean]
 
 task :set_ci_env do
   ENV["CI"] = "1"
+end
+
+task :clean do
+  if ENV["CLEAN"]
+    FileUtils.rm_rf "public/assets"
+  end
 end
