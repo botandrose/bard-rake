@@ -1,0 +1,5 @@
+|          | current  | current+test(if dev) | all        |
+| create   |          | create               | create:all |
+| migrate  | migrate  | B/R::migrate:all     |            |
+| rollback | rollback | B/R::rollback:all    |            |
+| drop     |          | drop                 | drop:all   |
