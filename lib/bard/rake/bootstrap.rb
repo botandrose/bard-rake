@@ -5,7 +5,7 @@ end
 
 desc "Bootstrap project"
 task :bootstrap do
-  system "cp config/database.sample.yml config/database.yml" unless File.exist?('config/database.yml') or !File.exist?('config/database.sample.yml')
+  invoke_take_if_exists "bootstrap:database.yml"
   invoke_task_if_exists "db:create"
   invoke_task_if_exists "db:migrate"
   invoke_task_if_exists "rake parallel:create"
@@ -16,3 +16,13 @@ task :bootstrap do
   Rake::Task["restart"].invoke
 end
 
+task "bootstrap:database.yml" do
+  unless File.exist?("config/database.yml")
+    %w[config/database.sample.yml config/database.yml.example].each do |path|
+      if File.exist?(path)
+        system "cp #{path} config/database.yml"
+        break
+      end
+    end
+  end
+end
