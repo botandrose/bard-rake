@@ -5,7 +5,7 @@ end
 
 desc "Bootstrap project"
 task :bootstrap do
-  invoke_take_if_exists "bootstrap:database.yml"
+  invoke_task_if_exists "bootstrap:database.yml"
   invoke_task_if_exists "db:create"
   invoke_task_if_exists "db:migrate"
   invoke_task_if_exists "rake parallel:create"
