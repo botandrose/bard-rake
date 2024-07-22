@@ -1,4 +1,5 @@
 require "backhoe"
+require "bard-backup"
 
 namespace :db do
   desc "Dump the current database to db/data.sql.gz"
@@ -15,7 +16,7 @@ namespace :db do
     project_name = File.basename(Dir.getwd)
     config = Rails.application.credentials.bard_backup
     s3_path = config.delete(:s3_path) || "bard-backup/#{project_name}"
-    Backhoe.backup s3_path, **config
+    Bard::Backup.call s3_path, **config
   end
 
   task "drop:current" => :environment do

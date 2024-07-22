@@ -19,6 +19,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "rake"
   spec.add_dependency "backhoe", ">=0.6.0"
+  spec.add_dependency "bard-backup"
   spec.add_dependency "railties"
 
   spec.add_development_dependency "bundler"
