@@ -16,9 +16,10 @@ namespace :db do
 
   task :backup => :environment do
     project_name = File.basename(Dir.getwd)
-    config = Rails.application.credentials.bard_backup
-    s3_path = config.delete(:s3_path) || "bard-backup/#{project_name}"
-    Bard::Backup.call s3_path, **config
+    Array(Rails.application.credentials.bard_backup).each do |config|
+      s3_path = config.delete(:s3_path) || "bard-backup/#{project_name}"
+      Bard::Backup.call s3_path, **config
+    end
   end
 
   task "drop:current" => :environment do
