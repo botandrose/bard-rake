@@ -19,9 +19,9 @@ namespace :db do
     configs = Rails.application.credentials.bard_backup
     configs = [configs] if configs.is_a?(Hash)
     configs.each do |config|
-      s3_path = config.delete(:s3_path) || "bard-backup/#{project_name}"
-      Bard::Backup.call s3_path, **config
+      config[:path] ||= "bard-backup/#{project_name}"
     end
+    Bard::Backup.call configs
   end
 
   task "drop:current" => :environment do
