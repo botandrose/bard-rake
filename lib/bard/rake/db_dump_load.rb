@@ -14,15 +14,7 @@ namespace :db do
     Backhoe.load args.path, drop_and_create: true
   end
 
-  task :backup => :environment do
-    project_name = File.basename(Dir.getwd)
-    configs = Rails.application.credentials.bard_backup
-    configs = [configs] if configs.is_a?(Hash)
-    configs.each do |config|
-      config[:path] ||= "bard-backup/#{project_name}"
-    end
-    Bard::Backup.call configs
-  end
+  task :backup => "bard:backup"
 
   task "drop:current" => :environment do
     ActiveRecord::Tasks::DatabaseTasks.drop Rails.env.to_sym
@@ -32,4 +24,3 @@ namespace :db do
     ActiveRecord::Tasks::DatabaseTasks.create Rails.env.to_sym
   end
 end
-
