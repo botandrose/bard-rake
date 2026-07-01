@@ -20,10 +20,12 @@ task :default => [:bootstrap_test] do
   invoke_task_if_exists "spec"
   invoke_task_if_exists "spec:javascripts"
 
-  if ENV["CI"] && Rake::Task.task_defined?("parallel:features")
-    Rake::Task["parallel"].invoke
-  else
-    invoke_task_if_exists "cucumber"
+  if Dir["features/**/*.feature"].any?
+    if ENV["CI"] && Rake::Task.task_defined?("parallel:features")
+      Rake::Task["parallel"].invoke
+    else
+      invoke_task_if_exists "cucumber"
+    end
   end
 end
 
